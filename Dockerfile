@@ -10,7 +10,7 @@ COPY . .
 RUN rm -rf ./bin
 RUN go clean -i ./...
 RUN go mod vendor
-RUN CGO_ENABLED=1 GOOS=linux go build -o bin/app
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o bin/app
 
 ############################
 # STEP 2 build a small image
@@ -18,7 +18,7 @@ RUN CGO_ENABLED=1 GOOS=linux go build -o bin/app
 FROM alpine
 
 WORKDIR /root/
-COPY --from=builder /go/src/qonto-service/interview-test-backend-assets/qonto_accounts.sqlite .
+COPY --from=builder /go/src/qonto-service/test/qonto_accounts.sqlite .
 COPY --from=builder /go/src/qonto-service/bin/app .
 CMD ["./app"]
 
