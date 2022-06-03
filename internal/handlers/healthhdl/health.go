@@ -16,10 +16,10 @@ const (
 
 // Validator defines the function that health validators need to implement to participate in checking if the service
 // should be marked as healthy or not.
-type Validator func() response
+type Validator func() Response
 
-// response is format of response for the service
-type response struct {
+// Response is format of Response for the service
+type Response struct {
 	Name    string      `json:"name"`
 	Status  string      `json:"status"`
 	Message interface{} `json:"message,omitempty"`
@@ -54,7 +54,7 @@ func New(serviceName, serviceVersion, buildTime, commitVersion, pipelineNumber s
 
 func (h health) Health(w http.ResponseWriter, r *http.Request) {
 	statusCode := http.StatusOK
-	data := []response{
+	data := []Response{
 		{Name: "Name", Status: StatusOK, Message: h.serviceName},
 		{Name: "Version", Status: StatusOK, Message: h.serviceVersion},
 		{Name: "Commit SHA", Status: StatusOK, Message: h.commitVersion},

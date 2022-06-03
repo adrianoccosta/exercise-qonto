@@ -151,7 +151,7 @@ func configAPIHandlers(ctx *cli.Context, logger log.Logger) *mux.Router {
 	transferService := transfersvc.New(transactionRepository, bankAccountRepository, logger)
 
 	// handlers
-	handlerHealth := healthhdl.New(ctx.App.Name, ctx.App.Version, buildTime, commitVersion, pipelineNumber)
+	handlerHealth := healthhdl.New(ctx.App.Name, ctx.App.Version, buildTime, commitVersion, pipelineNumber, rds.DBHealth())
 	handlerSwagger := swaggerhdl.New("./")
 
 	handlerBankAccount := bankaccounthdl.New(bankAccountService, logger)

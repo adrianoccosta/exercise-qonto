@@ -18,16 +18,16 @@ const (
 )
 
 var (
-	testExpectedMasterOK = func() response {
-		return response{
+	testExpectedMasterOK = func() Response {
+		return Response{
 			Name:    "master",
 			Status:  StatusOK,
 			Message: "bla",
 		}
 	}
 
-	testExpectedMasterNOK = func() response {
-		return response{
+	testExpectedMasterNOK = func() Response {
+		return Response{
 			Name:    "master",
 			Status:  StatusNOK,
 			Message: "bla",
@@ -40,8 +40,6 @@ func TestHealth(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	//transactionID := uuid.NewUUID().String()
-	//req.Header.Add(rosettaapi.HeaderXTransactionID, transactionID)
 
 	h := New(serviceName, serviceVersion, buildTime, commitVersion, pipelineNumber, testExpectedMasterOK)
 
@@ -56,7 +54,7 @@ func TestHealth(t *testing.T) {
 			status, expectedStatusCode)
 	}
 
-	var actual []response
+	var actual []Response
 	err = json.NewDecoder(rr.Body).Decode(&actual)
 	if err != nil {
 		t.Fatal(err)

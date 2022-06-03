@@ -2,6 +2,7 @@ package config
 
 import (
 	"database/sql"
+	"github.com/adrianoccosta/exercise-qonto/internal/handlers/healthhdl"
 	"github.com/adrianoccosta/exercise-qonto/log"
 	"time"
 
@@ -36,4 +37,24 @@ func InitDBConnection(conn DBConnection, logger log.Logger) Conn {
 	db.SetConnMaxLifetime(time.Minute * time.Duration(conn.ConnMaxTTLMinutes))
 
 	return Conn{Conn: db}
+}
+
+// DBHealth validator for db connection
+func (db Conn) DBHealth() healthhdl.Validator {
+	return func() healthhdl.Response {
+		err := db.Conn.Ping()
+
+		res := healthhdl.Response{
+			Name: "Repository connection",
+		}
+
+		if err != nil {
+			res.Status = healthhdl.StatusNOK
+			res.Message = err.Error()
+		} else {
+			res.Status = healthhdl.StatusOK
+			res.Message = ""
+		}
+		return res
+	}
 }
