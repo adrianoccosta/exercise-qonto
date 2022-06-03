@@ -1,0 +1,11 @@
+# Folders
+vendor/
+.idea/
+/bin/
+
+# Files
+.DS_Store
+-template
+.scannerwork
+qonto_accounts.sqlite
+after_output.log

@@ -1,0 +1,67 @@
+swagger: "2.0"
+info:
+  title: service-featured-dealer
+  description: service-featured-dealer api
+  version: "1.0.0"
+basePath: /api
+produces:
+  - application/json
+paths:
+  /swagger:
+    get:
+      summary: Return the documentation about the api
+      description: Return the documentation about the api
+      responses:
+        200:
+          description: Successfully fetched the api documentation
+
+definitions:
+  Validation:
+    type: object
+    properties:
+      field:
+        type: string
+      detail:
+        type: string
+      title:
+        type: string
+  ResponseMetadata:
+    type: object
+    properties:
+      service:
+        type: string
+      message:
+        type: string
+      status_code:
+        type: integer
+        format: int32
+      transaction_id:
+        type: string
+      created_at:
+        type: string
+      process:
+        type: string
+      name:
+        type: string
+      offset:
+        type: integer
+        format: int32
+      limit:
+        type: integer
+        format: int32
+      has_next:
+        type: boolean
+  ErrorResponse:
+    type: object
+    properties:
+      detail:
+        type: string
+        readOnly: true
+      title:
+        type: string
+        readOnly: true
+      validation:
+        type: array
+        readOnly: true
+        items:
+          "$ref": "#/definitions/Validation"
