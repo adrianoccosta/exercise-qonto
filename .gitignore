@@ -2,6 +2,7 @@
 vendor/
 .idea/
 /bin/
+docs/
 
 # Files
 .DS_Store
