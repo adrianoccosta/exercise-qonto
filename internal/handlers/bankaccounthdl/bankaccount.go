@@ -42,6 +42,14 @@ func (h handler) Handlers(r *mux.Router) {
 	r.HandleFunc(pathSelectionIban, h.delete).Methods(http.MethodDelete)
 }
 
+// @Summary create a new bank account if it doesn't exist
+// @ID create-bank-account
+// @Tags bank account
+// @Produce json
+// @Param data body domain.BankAccount true "bank account data"
+// @Success 201 {string}  string
+// @Failure 400 {string}  string
+// @Router /v1/bank-account [post]
 func (h handler) create(w http.ResponseWriter, r *http.Request) {
 
 	var bankAccount domain.BankAccount
@@ -61,6 +69,15 @@ func (h handler) create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// @Summary read a bank account based on given iban
+// @ID read-bank-account-by-iban
+// @Tags bank account
+// @Produce json
+// @Param iban path string true "User iban"
+// @Success 200 {object} domain.BankAccount
+// @Failure 400 {string}  string
+// @Failure 500 {string}  string
+// @Router /v1/bank-account/iban/{iban} [get]
 func (h handler) read(w http.ResponseWriter, r *http.Request) {
 
 	iban := mux.Vars(r)["iban"]
@@ -82,6 +99,15 @@ func (h handler) read(w http.ResponseWriter, r *http.Request) {
 	tools.WriteJSON(w, http.StatusOK, bankAccount)
 }
 
+// @Summary update an existent bank account
+// @ID update-bank-account
+// @Tags bank account
+// @Produce json
+// @Param data body domain.BankAccount true "bank account data"
+// @Success 201 {string}  string
+// @Failure 400 {string}  string
+// @Failure 500 {string}  string
+// @Router /v1/bank-account [put]
 func (h handler) update(w http.ResponseWriter, r *http.Request) {
 
 	var bankAccount domain.BankAccount
@@ -102,6 +128,15 @@ func (h handler) update(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// @Summary delete a bank account based on given iban
+// @ID delete-bank-account-by-iban
+// @Tags bank account
+// @Produce json
+// @Param iban path string true "User iban"
+// @Success 200 {string}  string
+// @Failure 400 {string}  string
+// @Failure 500 {string}  string
+// @Router /v1/bank-account/iban/{iban} [delete]
 func (h handler) delete(w http.ResponseWriter, r *http.Request) {
 
 	iban := mux.Vars(r)["iban"]

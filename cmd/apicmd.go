@@ -7,7 +7,6 @@ import (
 	"github.com/adrianoccosta/exercise-qonto/internal/handlers/bankaccounthdl"
 	"github.com/adrianoccosta/exercise-qonto/internal/handlers/healthhdl"
 	"github.com/adrianoccosta/exercise-qonto/internal/handlers/metricshdl"
-	"github.com/adrianoccosta/exercise-qonto/internal/handlers/swaggerhdl"
 	"github.com/adrianoccosta/exercise-qonto/internal/handlers/transactionhdl"
 	"github.com/adrianoccosta/exercise-qonto/internal/handlers/transferhdl"
 	"github.com/adrianoccosta/exercise-qonto/internal/repository/bankaccountrepo"
@@ -19,12 +18,15 @@ import (
 	"github.com/adrianoccosta/exercise-qonto/tools"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/swaggo/http-swagger"
 	"github.com/urfave/cli/v2"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	_ "github.com/adrianoccosta/exercise-qonto/docs"
 )
 
 const (
@@ -152,7 +154,6 @@ func configAPIHandlers(ctx *cli.Context, logger log.Logger) *mux.Router {
 
 	// handlers
 	handlerHealth := healthhdl.New(ctx.App.Name, ctx.App.Version, buildTime, commitVersion, pipelineNumber, rds.DBHealth())
-	handlerSwagger := swaggerhdl.New("./")
 
 	handlerBankAccount := bankaccounthdl.New(bankAccountService, logger)
 	handlertransaction := transactionhdl.New(transactionService, logger)
@@ -160,9 +161,9 @@ func configAPIHandlers(ctx *cli.Context, logger log.Logger) *mux.Router {
 
 	apiRouter := r.PathPrefix("/qonto/api").Subrouter()
 
+	apiRouter.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	apiRouter.Handle("/metrics", promhttp.HandlerFor(metrics.Registry(), promhttp.HandlerOpts{}))
 	apiRouter.HandleFunc("/health", handlerHealth.Health)
-	apiRouter.HandleFunc("/swagger", handlerSwagger.ServeSwagger)
 
 	apiV1Router := apiRouter.PathPrefix("/v1").Subrouter()
 

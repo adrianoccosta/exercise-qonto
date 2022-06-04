@@ -37,6 +37,14 @@ func (h handler) Handlers(r *mux.Router) {
 	r.HandleFunc(pathSelection, h.transfer).Methods(http.MethodPost)
 }
 
+// @Summary transfer funds in bulk
+// @ID create-bulk-transfers
+// @Tags transfer
+// @Produce json
+// @Param data body domain.BulkTransfer true "bulk transfer data"
+// @Success 201 {string}  string
+// @Failure 422 {string}  string
+// @Router /v1/transfer/bulk [post]
 func (h handler) transfer(w http.ResponseWriter, r *http.Request) {
 
 	var bulkTransfer domain.BulkTransfer

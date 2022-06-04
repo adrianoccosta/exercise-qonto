@@ -36,6 +36,14 @@ func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
+// @title Qonto service Swagger API
+// @version 1.0.0
+// @description Swagger API for Golang Qonto service
+
+// @contact.name Adriano Costa
+// @contact.email adriano.c.costa@gmail.com
+
+// @BasePath /qonto/api
 func main() {
 	app := cli.App{
 		Name:        App,

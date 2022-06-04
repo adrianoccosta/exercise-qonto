@@ -52,6 +52,13 @@ func New(serviceName, serviceVersion, buildTime, commitVersion, pipelineNumber s
 	}
 }
 
+// Health Show service health info
+// @Summary Show service health info
+// @ID read-health
+// @Tags tools
+// @Produce json
+// @Success 200 {array} Response
+// @Router /health [get]
 func (h health) Health(w http.ResponseWriter, r *http.Request) {
 	statusCode := http.StatusOK
 	data := []Response{

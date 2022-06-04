@@ -7,9 +7,10 @@ WORKDIR /go/src/qonto-service
 
 COPY . .
 
-RUN rm -rf ./bin
-RUN go clean -i ./...
+RUN go get -u github.com/swaggo/swag/cmd/swag
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go mod vendor
+RUN swag init
 RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o bin/app
 
 ############################

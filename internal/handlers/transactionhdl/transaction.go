@@ -35,6 +35,15 @@ func (h handler) Handlers(r *mux.Router) {
 	r.HandleFunc(pathSelection, h.read).Methods(http.MethodGet)
 }
 
+// @Summary Retrieves a bank account based on given iban
+// @Description Get details of all transactions
+// @Tags transactions
+// @ID read-transactions
+// @Produce json
+// @Param q query string false "transaction search by q"
+// @Success 200 {array} domain.BankAccount
+// @Failure 500 {string}  string
+// @Router /v1/transaction [get]
 func (h handler) read(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 

@@ -138,6 +138,13 @@ type metrics struct {
 	registry         prometheus.Gatherer
 }
 
+// Handler Show service metrics info
+// @Summary Show service metrics info
+// @ID read-metrics
+// @Tags tools
+// @Produce json
+// @Success 200 {string}  string
+// @Router /metrics [get]
 func (m metrics) Handler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		begin := time.Now()
