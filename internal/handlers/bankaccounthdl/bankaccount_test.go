@@ -256,7 +256,7 @@ func TestBankAccountHandler(t *testing.T) {
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusInternalServerError, rr.Code)
-		assert.Empty(t, rr.Body.String())
+		assert.NotEmpty(t, rr.Body.String())
 	})
 
 }
