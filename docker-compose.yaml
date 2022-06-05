@@ -6,7 +6,7 @@ networks:
 
 services:
   qonto-service:
-    image: adrianoccosta/qonto:1.0.0
+    image: adrianoccosta/qonto:latest
     container_name: qonto-service
     hostname: qonto-service
     restart: always
