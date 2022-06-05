@@ -55,6 +55,12 @@ func (h handler) transfer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := bulkTransfer.Validate(); err != nil {
+		h.logger.WithError(err).Error("Missing mandatory fields")
+		tools.WriteError(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+
 	if err := h.transferService.BulkTransfer(bulkTransfer); err != nil {
 		h.logger.WithError(err).Error("error registering bulk transfer")
 		tools.WriteError(w, http.StatusUnprocessableEntity, err)

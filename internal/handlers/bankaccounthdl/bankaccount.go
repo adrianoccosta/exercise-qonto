@@ -60,6 +60,12 @@ func (h handler) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err = bankAccount.Validate(); err != nil {
+		h.logger.WithError(err).Error("Missing mandatory fields")
+		tools.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+
 	err = h.bankAccountService.Create(bankAccount)
 	if err != nil {
 		h.logger.WithError(err).Error("error creating bank account")
