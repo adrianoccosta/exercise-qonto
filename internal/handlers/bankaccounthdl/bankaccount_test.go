@@ -54,6 +54,27 @@ func TestBankAccountHandler(t *testing.T) {
 
 		serviceMock.EXPECT().Create(gomock.Any()).Times(0)
 		logMock.EXPECT().WithError(gomock.Any()).Return(logMock).Times(1)
+		logMock.EXPECT().Error("error parsing message body").Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("POST", "/bank-account", strings.NewReader("{ \"test\":"))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
+		assert.NotEmpty(t, rr.Body.String())
+	})
+
+	t.Run("Test create return error when missing mandatory fields", func(t *testing.T) {
+
+		serviceMock.EXPECT().Create(gomock.Any()).Times(0)
+		logMock.EXPECT().WithError(gomock.Any()).Return(logMock).Times(1)
 		logMock.EXPECT().Error("Missing mandatory fields").Times(1)
 
 		h := New(serviceMock, logMock)
