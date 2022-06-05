@@ -22,6 +22,6 @@ FROM alpine
 WORKDIR /root/
 COPY --from=builder /go/src/qonto-service/test/qonto_accounts.sqlite .
 COPY --from=builder /go/src/qonto-service/bin/app .
-ENV DATABASE_FILE_PATH = ./qonto_accounts.sqlite
+ENV DATABASE_FILE_PATH = /root/qonto_accounts.sqlite
 CMD ["./app"]
 
