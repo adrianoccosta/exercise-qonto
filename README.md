@@ -40,7 +40,7 @@ Aditionally a postman collection is provided within the project:
 >  {base_project}/test/qonto.postman_collection.json
 
 
-Endpoints to run the exercises:
+#### Endpoints to run the exercises:
 
 **Bank Account Endpoints**
 
@@ -65,7 +65,7 @@ Endpoints to run the exercises:
 
 **Subscriber Information Endpoints**
 
-1. register new subscriber information
+1. Bulk transfer operation
 > curl -X POST 'http://127.0.0.1:8080/qonto/api/v1/transfer/bulk' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{...}'
 
 **Health Endpoints**
