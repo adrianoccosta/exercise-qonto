@@ -81,24 +81,16 @@ func (h handler) create(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param iban path string true "User iban"
 // @Success 200 {object} domain.BankAccount
-// @Failure 400 {string}  string
-// @Failure 500 {string}  string
+// @Failure 404 {string}  string
 // @Router /v1/bank-account/iban/{iban} [get]
 func (h handler) read(w http.ResponseWriter, r *http.Request) {
 
 	iban := mux.Vars(r)["iban"]
-
-	if iban == "" {
-		h.logger.Error("iban not provided")
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	bankAccount, err := h.bankAccountService.Read(iban)
 
 	if err != nil {
-		h.logger.WithError(err).Error(fmt.Sprintf("error reading banck account with iban %s", iban))
-		tools.WriteError(w, http.StatusInternalServerError, err)
+		h.logger.WithError(err).Error(fmt.Sprintf("error reading bank account with iban %s", iban))
+		tools.WriteError(w, http.StatusNotFound, err)
 		return
 	}
 
@@ -124,6 +116,12 @@ func (h handler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err = bankAccount.Validate(); err != nil {
+		h.logger.WithError(err).Error("Missing mandatory fields")
+		tools.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+
 	err = h.bankAccountService.Update(bankAccount)
 	if err != nil {
 		h.logger.WithError(err).Error("error updating bank account")
@@ -140,19 +138,11 @@ func (h handler) update(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param iban path string true "User iban"
 // @Success 200 {string}  string
-// @Failure 400 {string}  string
 // @Failure 500 {string}  string
 // @Router /v1/bank-account/iban/{iban} [delete]
 func (h handler) delete(w http.ResponseWriter, r *http.Request) {
 
 	iban := mux.Vars(r)["iban"]
-
-	if iban == "" {
-		h.logger.Error("iban not provided")
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	err := h.bankAccountService.Delete(iban)
 	if err != nil {
 		h.logger.WithError(err).Error("error deleting bank account")
