@@ -33,7 +33,7 @@ To run the application (with docker compose):
 
 ### Test
 
-This application expose a swagger web page, where all the available web endpoints can be found and trigger:
+This application expose a **swagger web page**, where all the available web endpoints can be found and trigger:
 http://127.0.0.1:8080/qonto/api/swagger/index.html
 
 Aditionally a postman collection is provided within the project:
@@ -42,7 +42,7 @@ Aditionally a postman collection is provided within the project:
 
 Endpoints to run the exercises:
 
-*Bank Account Endpoints*
+**Bank Account Endpoints**
 
 1. register new bank account
 > curl -X POST 'http://127.0.0.1:8080/qonto/api/v1/bank-account' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "name": "ACME Corp", "balance": "100000", "iban": "FR10474608000002006107XXXXX", "bic": "OIVUSCLQXXX"}'
@@ -56,17 +56,27 @@ Endpoints to run the exercises:
 4. delete bank account by its iban
 > curl -X DELETE 'http://127.0.0.1:8080/qonto/api/v1/bank-account/iban/FR10474608000002006107XXXXX' -H 'accept: application/json'
 
-*Transaction Endpoints*
+**Transaction Endpoints**
 
 1. Get transactions
 > curl -X GET 'http://127.0.0.1:8080/qonto/api/v1/transaction' -H 'accept: application/json'
 
 > curl -X GET 'http://127.0.0.1:8080/qonto/api/v1/transaction?counterparty_iban=FR0010009380540930414023042' -H 'accept: application/json'
 
-*Subscriber Information Endpoints*
+**Subscriber Information Endpoints**
 
 1. register new subscriber information
 > curl -X POST 'http://127.0.0.1:8080/qonto/api/v1/transfer/bulk' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{...}'
+
+**Health Endpoints**
+
+1. get metrics
+> curl -X POST 'http://127.0.0.1:8080/qonto/api/health' -H 'accept: application/json'
+
+**Metrics Endpoints**
+
+1. get metrics
+> curl -X POST 'http://127.0.0.1:8080/qonto/api/metrics' -H 'accept: application/json'
 
 ### Notes
 
