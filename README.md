@@ -1,5 +1,3 @@
-não uso gorm porque para queries complexas não funciona bem por isso tbm não preciso dele para as simples
-
 # Qonto
 
 ## Exercise
@@ -73,6 +71,7 @@ Endpoints to run the exercises:
 ### Notes
 
 This project is implemented with:
-*  go 1.18
-*  SQlite
-*  Swagger
+* go 1.18
+* SQlite
+* Swagger
+* GORM was not used because is hard to manage complex queries with it
