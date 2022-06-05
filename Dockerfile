@@ -9,8 +9,6 @@ COPY . .
 
 RUN go get -u github.com/swaggo/swag/cmd/swag
 RUN go install github.com/swaggo/swag/cmd/swag@latest
-RUN go get -u github.com/golang/mock/gomock
-RUN go install github.com/golang/mock/mockgen
 RUN go mod vendor
 RUN go test ./...
 RUN swag init
