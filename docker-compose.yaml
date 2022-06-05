@@ -6,13 +6,13 @@ networks:
 
 services:
   qonto-service:
-    image: adrianoccosta/qonto:latest
+    image: adrianoccosta/qonto:1.0.0
     container_name: qonto-service
     hostname: qonto-service
     restart: always
     ports:
       - "8080:8080"
     environment:
-      DATABASE_FILE_PATH: ./test/qonto_accounts.sqlite
+      DATABASE_FILE_PATH: ./qonto_accounts.sqlite
     networks:
       - qonto
