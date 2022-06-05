@@ -20,8 +20,6 @@ RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o bin/app
 FROM alpine
 
 WORKDIR /root/
-COPY --from=builder /go/src/qonto-service/test/qonto_accounts.sqlite .
 COPY --from=builder /go/src/qonto-service/bin/app .
-ENV DATABASE_FILE_PATH = /root/qonto_accounts.sqlite
 CMD ["./app"]
 
