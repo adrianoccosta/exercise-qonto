@@ -148,4 +148,115 @@ func TestBankAccountHandler(t *testing.T) {
 		assert.NotEmpty(t, rr.Body.String())
 	})
 
+	t.Run("Test update return success", func(t *testing.T) {
+
+		bankAccount := domain.BankAccount{
+			Name:    "ACME Corp",
+			Balance: 12.40,
+			Iban:    "FR10474608000002006107XXXXX",
+			Bic:     "OIVUSCLQXXX",
+		}
+
+		serviceMock.EXPECT().
+			Update(bankAccount).
+			Return(nil).Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("PUT", "/bank-account", strings.NewReader("{ \"name\": \"ACME Corp\", \"balance\": \"12.40\", \"iban\": \"FR10474608000002006107XXXXX\", \"bic\": \"OIVUSCLQXXX\"}"))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusCreated, rr.Code)
+		assert.Equal(t, "", rr.Body.String())
+	})
+
+	t.Run("Test update return error when missing mandatory fields", func(t *testing.T) {
+
+		serviceMock.EXPECT().Update(gomock.Any()).Times(0)
+		logMock.EXPECT().WithError(gomock.Any()).Return(logMock).Times(1)
+		logMock.EXPECT().Error("Missing mandatory fields").Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("PUT", "/bank-account", strings.NewReader("{ \"test\": \"ACME Corp\"}"))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
+		assert.NotEmpty(t, rr.Body.String())
+	})
+
+	t.Run("Test update return error", func(t *testing.T) {
+
+		serviceMock.EXPECT().Update(gomock.Any()).Return(errors.New("error")).Times(1)
+		logMock.EXPECT().WithError(gomock.Any()).Return(logMock).Times(1)
+		logMock.EXPECT().Error("error updating bank account").Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("PUT", "/bank-account", strings.NewReader("{ \"name\": \"ACME Corp\", \"balance\": \"12.40\", \"iban\": \"FR10474608000002006107XXXXX\", \"bic\": \"OIVUSCLQXXX\"}"))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusInternalServerError, rr.Code)
+		assert.NotEmpty(t, rr.Body.String())
+	})
+
+	t.Run("Test delete return success", func(t *testing.T) {
+
+		serviceMock.EXPECT().
+			Delete("FR10474608000002006107XXXXX").
+			Return(nil).Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("DELETE", "/bank-account/iban/FR10474608000002006107XXXXX", nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusOK, rr.Code)
+	})
+
+	t.Run("Test delete return error", func(t *testing.T) {
+
+		serviceMock.EXPECT().Delete(gomock.Any()).Return(errors.New("error"))
+		logMock.EXPECT().WithError(gomock.Any()).Return(logMock).Times(1)
+		logMock.EXPECT().Error("error deleting bank account").Times(1)
+
+		h := New(serviceMock, logMock)
+		rr := httptest.NewRecorder()
+		r := mux.NewRouter()
+		h.Handlers(r)
+
+		req, err := http.NewRequest("DELETE", "/bank-account/iban/FR10474608000002006107XXXXX", nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		r.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusInternalServerError, rr.Code)
+		assert.NotEmpty(t, rr.Body.String())
+	})
+
 }
