@@ -40,7 +40,9 @@ func (h handler) Handlers(r *mux.Router) {
 // @Tags transactions
 // @ID read-transactions
 // @Produce json
-// @Param q query string false "transaction search by q"
+// @Param name query string false "transaction search by name"
+// @Param iban query string false "transaction search by iban"
+// @Param counterparty_name query string false "transaction search by counterparty_name"
 // @Success 200 {array} domain.BankAccount
 // @Failure 500 {string}  string
 // @Router /v1/transaction [get]
