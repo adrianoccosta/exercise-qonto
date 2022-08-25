@@ -53,6 +53,7 @@ func (s service) BulkTransfer(data domain.BulkTransfer) error {
 }
 
 func (s service) registerTransfers(bankAccount bankaccountrepo.BankAccount, data domain.BulkTransfer) {
+	s.bankAccountRepo.Update(bankAccount)
 	for _, creditTransfer := range data.CreditTransfers {
 		s.transactionrepo.Create(transactionrepo.Transaction{
 			CounterPartyName: creditTransfer.CounterPartyName,
@@ -64,6 +65,4 @@ func (s service) registerTransfers(bankAccount bankaccountrepo.BankAccount, data
 			Description:      creditTransfer.Description,
 		})
 	}
-
-	s.bankAccountRepo.Update(bankAccount)
 }

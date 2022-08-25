@@ -1,0 +1,6 @@
+mockgen -destination=test/mocks/repository/bankaccountrepo.go -package=mockrepository github.com/adrianoccosta/exercise-qonto/internal/repository/bankaccountrepo BankAccountRepository
+mockgen -destination=test/mocks/repository/transactionrepo.go -package=mockrepository github.com/adrianoccosta/exercise-qonto/internal/repository/transactionrepo TransactionRepository
+mockgen -destination=test/mocks/log/log.go -package=mocklog github.com/adrianoccosta/exercise-qonto/log Logger
+mockgen -destination=test/mocks/services/bankaccountsvc.go -package=mockservice github.com/adrianoccosta/exercise-qonto/internal/services/bankaccountsvc BankAccountService
+mockgen -destination=test/mocks/services/transactionsvc.go -package=mockservice github.com/adrianoccosta/exercise-qonto/internal/services/transactionsvc TransactionService
+mockgen -destination=test/mocks/services/transfersvc.go -package=mockservice github.com/adrianoccosta/exercise-qonto/internal/services/transfersvc TransferService
